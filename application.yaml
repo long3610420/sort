@@ -1,0 +1,52 @@
+bitvito:
+  matching:
+    system:
+      alwaysSerial: true
+    rocket:
+      groupName: test
+      namespace: 192.168.112.20:9876
+      topic-prefix: future_matching_order_request
+      topic-orderly-prefix: future_matching_
+      batch-size: 100
+    id-generator:
+      machineId: 10
+      data-center-id: 0
+    pulsar:
+      url: pulsar://172.30.96.33:6650,172.30.96.36:6650
+      topic: matching_order_request
+      prod-topic: matching_order_sort2_
+      create-topic: false
+
+spring:
+  redis:
+    cluster:
+      nodes:
+        - redis-market-cluster.6ykkst.clustercfg.apne1.cache.amazonaws.com:6379
+      max-redirects: 3
+    password:
+    lettuce:
+      pool:
+        max-idle: 50
+        min-idle: 50
+        max-active: 100
+        max-wait: 10000
+    timeout: 5000
+redis:
+  cluster:
+    enabled: true
+
+management:
+  security:
+    enabled: true
+  endpoint:
+    health:
+      show-details: always #健康情况-展示全部详情，否则只展示status信息
+  endpoints:
+    web:
+      exposure:
+        include: health, prometheus
+  health:
+    enabled: true
+    path: "/health"
+    sensitive: true
+

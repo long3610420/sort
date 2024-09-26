@@ -1,0 +1,54 @@
+logging:
+  config: classpath:log4j2-test.xml
+bitvito:
+  mysql:
+    enable: true
+    username: dev
+    password: FdYvNTghWcP7@!NCsgwh5okX5
+    url: jdbc:mysql://172.30.96.24:3306/umc?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+  matching:
+    system:
+      alwaysSerial: true
+      contractName: usdt #其他合约需要修改
+    rocket:
+      groupName: test
+      namespace: 192.168.112.20:9876
+      topic-prefix: future_matching_order_request
+      topic-orderly-prefix: future_matching_
+      batch-size: 100
+    id-generator:
+      machineId: 0
+      data-center-id: 0
+      zk-address: 172.30.96.24::2181
+    pulsar:
+      url: pulsar://172.30.96.33:6650,172.30.96.36:6650
+      topic: persistent://terra/public/matching_order_request_spots_tenant_1
+      prod-topic: persistent://terra/public/matching_order_sort_1_
+      create-topic: false
+
+spring:
+  application:
+    name: sort
+  redis:
+    cluster:
+      nodes:
+        - 172.30.96.24:7001
+        - 172.30.96.24:7002
+        - 172.30.96.24:7003
+        - 172.30.96.24:7004
+        - 172.30.96.24:7005
+        - 172.30.96.24:7000
+      max-redirects: 3
+    password:
+    lettuce:
+      pool:
+        max-idle: 50
+        min-idle: 50
+        max-active: 100
+        max-wait: 10000
+    timeout: 5000
+nacos:
+  config:
+    server-addr: 172.30.96.30:8848
+  discovery:
+    server-addr: 172.30.96.30:8848

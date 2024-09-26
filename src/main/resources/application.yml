@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: sort
+  profiles:
+    active: prod
+server:
+  port: 6688
+management:
+  security:
+    enabled: true
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health, prometheus
+  health:
+    enabled: true
+    path: "/health"
+    sensitive: true
+  metrics:
+    sensitive: true
+  server:
+    servlet:
+      context-path: /
+    port: 6689
+logging:
+  level:
+    root: debug
+redis:
+  cluster:
+    enabled: false
+bitvito:
+  currencyPairIds: 1001044,1002044,1003044,1004044,1005044,1006044,1007044,1008044,1009044,1010044,1011044,1012044,1013044,2001045,2002045,2003045,2004045,2005045,2006045,2007045,2008045,2009045,2010045,2011045,2012045,2013045,3001044,3002044,3003044,3004044,3005044,3006044,3007044,3008044,3009044,3010044,3011044,3012044,3013044,3015044,3016044,3017044,3018044,3019044,3020044,3021044,3022044,3023044,3024044,3025044,3026044,3027044,3028044,3029044,3030044,3031044,3032044,3033044,3034044,3035044,3036044,3037044,3038044,3039044,3040044,3041044,3042044,3043044,3044044,3045044

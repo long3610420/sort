@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+全局开启异步处理
+1. 启动参数 -Dlog4j2.contextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector
+2. main方法中添加 System.setProperty("log4j2.contextSelector", "org.apache.logging.log4j.core.async.AsyncLoggerContextSelector");
+-->
+
+<configuration status="WARN" packages="com.bitvito.future.back.matching.sort">
+    <properties>
+        <property name="APP_NAME" value="terra-future-back-matching-sort"/>
+        <property name="LOG_HOME" value="/app/logs"/>
+        <property name="LOG_PATTERN"
+                  value="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight{%-5level} [%thread] [%X{tid}] %highlight{%class{1.}.%M:%L} - %m%n"/>
+    </properties>
+
+    <!--先定义所有的appender-->
+    <appenders>
+        <RollingFile name="INFO_FILE" fileName="${LOG_HOME}/${APP_NAME}/info.log" immediateFlush="false"
+                     filePattern="${LOG_HOME}/${APP_NAME}/info_%d{yyyy-MM-dd}-%i.log">
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <ThreadFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <!--指定了基于时间的触发策略-->
+                <TimeBasedTriggeringPolicy/>
+                <!--指定了基于文件大小的触发策略-->
+                <SizeBasedTriggeringPolicy size="1024MB"/>
+            </Policies>
+            <!--每天日志文件的最大数量，默认是7个就会进行覆盖-->
+            <DefaultRolloverStrategy max="10">
+                <Delete basePath="${LOG_HOME}/${APP_NAME}">
+                    <IfFileName glob="info_*.log"/>
+                    <IfLastModified age="5d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </appenders>
+
+    <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->
+    <loggers>
+        <logger name="com.alibaba.nacos.client" level="warn"/>
+        <root level="info" includeLocation="true" additivity="false">
+            <appender-ref ref="INFO_FILE"/>
+            <appender-ref ref="WARN_FILE"/>
+            <appender-ref ref="ERROR_FILE"/>
+        </root>
+    </loggers>
+</configuration>
